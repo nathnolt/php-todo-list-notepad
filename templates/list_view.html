@@ -1,0 +1,44 @@
+{extend base}
+{cut title}Editing List{/cut}
+
+<form method="POST">
+    <input type="hidden" name="lid" value="{{$subId}}">
+    
+    <div class="mb5">
+        <div class="mb3">
+            <label for="list_name" class="fw-bold">Name</label>
+            <input type="text" id="list_name" name="list_name" value="{{{$list['name']}}}" required class="w-full text-lg">
+        </div>
+        <div class="inline-block mr4">
+            <label for="list_group" class="fw-bold">Group</label>
+            <select id="list_group" name="groupid">
+                <option value="">(None)</option>
+                {each $groups as $g}
+                    <option value="{{$g['id']}}" {{$list['groupid'] == $g['id'] ? 'selected' : ''}}>{{{$g['name']}}}</option>
+                {end}
+            </select>
+        </div>
+        <button type="submit" class="btn bg-primary">Save Changes</button>
+    </div>
+
+    <ul class="checklist">
+    {each $items as $idx => $item}
+        <li>
+            <input type="hidden" name="item_id[{{$idx}}]" value="{{$item['id']}}">
+            <input type="checkbox" name="item_checked[]" value="{{$item['id']}}" {{$item['checked'] ? 'checked' : ''}}>
+            <input type="text" name="item_content[{{$idx}}]" value="{{{$item['content']}}}" class="{{$item['checked'] ? 'done' : ''}}">
+        </li>
+    {end}
+    </ul>
+
+    <div class="section-bottom">
+        <label>Add item:</label>
+        <input type="text" name="new_item" placeholder="What needs doing?">
+        <button type="submit" class="btn bg-primary">Add</button>
+    </div>
+
+    <div class="mt5">
+        <button type="submit" name="save_and_back_list" value="1" class="btn bg-muted">Save & Back</button>
+        <a href="?lists&action=confirm_delete_list&id={{$subId}}" class="btn bg-danger float-right">Delete List</a>
+    </div>
+</form>

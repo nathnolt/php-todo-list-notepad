@@ -1,0 +1,13 @@
+{extend base}
+{cut title}Dashboard{/cut}
+
+<p class="empty-note">Hello, {{{$username}}}.</p>
+
+<ul class="mt5 list-none">
+    <li><a href="?lists" class="btn bg-muted mb2 text-center">Todo Lists</a></li>
+    <li><a href="?notepads" class="btn bg-muted text-center">Notepads</a></li>
+</ul>
+
+<form method="POST" class="section-bottom">
+    <button class="btn bg-danger" name="do_logout" value="1">Sign out</button>
+</form>

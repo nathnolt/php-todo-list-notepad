@@ -1,0 +1,41 @@
+{extend base}
+{cut title}Editing Notebook{/cut}
+
+<form method="POST">
+    <input type="hidden" name="npid" value="{{$subId}}">
+    
+    <div class="mb5">
+        <div class="mb3">
+            <label for="notepad_name" class="fw-bold">Name</label>
+            <input type="text" id="notepad_name" name="notepad_name" value="{{{$notepad['name']}}}" required class="w-full">
+        </div>
+        <div class="inline-block mr4">
+            <label for="np_pages" class="fw-bold">Pages</label>
+            <input type="number" id="np_pages" name="pages" value="{{$notepad['pages']}}" min="1" max="999">
+        </div>
+        <div class="inline-block mr4">
+            <label for="np_group" class="fw-bold">Group</label>
+            <select id="np_group" name="groupid">
+                <option value="">(None)</option>
+                {each $groups as $g}
+                    <option value="{{$g['id']}}" {{$notepad['groupid'] == $g['id'] ? 'selected' : ''}}>{{{$g['name']}}}</option>
+                {end}
+            </select>
+        </div>
+        <button type="submit" class="btn bg-primary">Save Changes</button>
+        <a href="?notepads&action=confirm_delete_np&id={{$subId}}" class="btn bg-danger float-right">Delete</a>
+    </div>
+
+    {each $pages as $p}
+        <div class="cl-both mb6">
+            <div class="py1 mb2">
+                <span class="page-label">Page {{$p['num']}}</span>
+                <button type="submit" class="btn bg-primary float-right">Save</button>
+            </div>
+            <textarea name="page_content[{{$p['num']}}]" rows="10">{{{$p['content']}}}</textarea>
+        </div>
+        {if $p['num'] < $notepad['pages']}
+            <hr class="page-divider">
+        {end}
+    {end}
+</form>

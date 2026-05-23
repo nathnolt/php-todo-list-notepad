@@ -1,0 +1,12 @@
+{extend base}
+
+{cut title}404 - Page not found{/cut}
+
+<p><a href="/">Go back home</a></p>
+
+<h2>Valid routes:</h2>
+<ul>
+{each $items as $key}
+	<li>{{$key}}</li>
+{end}
+</ul>

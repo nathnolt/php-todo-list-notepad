@@ -1,0 +1,101 @@
+{extend base}
+{cut title}Notebooks{/cut}
+
+{if $action === 'groups'}
+    <h2 class="group-name">Notepad groups</h2>
+    {if empty($groups)}
+        <p class="empty-note">No groups yet.</p>
+    {else}
+        {each $groups as $g}
+            `$cnt = countNotepadsInGroup((int)$g['id']);`
+            <div class="empty-note mt3 mb2">{{$cnt}} notepad{{$cnt !== 1 ? 's' : ''}}</div>
+            <form method="POST" class="inline">
+                <input type="hidden" name="ngid" value="{{$g['id']}}">
+                <input type="text" name="name" value="{{{$g['name']}}}" required>
+                <button class="btn bg-muted" name="rename_notepadgroup" value="1">Rename</button>
+            </form>
+            <a href="?notepads&action=confirm_delete_notepadgroup&id={{$g['id']}}" class="btn bg-danger">Delete group</a>
+        {end}
+    {end}
+    <div class="section-bottom">
+        <p class="empty-note mb2">Add a new group:</p>
+        <form method="POST">
+            <input type="text" name="name" placeholder="Group name" required>
+            <button class="btn bg-primary" name="add_notepadgroup" value="1">Add group</button>
+        </form>
+    </div>
+{end}
+
+{if $action === 'confirm_delete_notepadgroup'}
+    `$g = getNotepadgroup($subId);`
+    `$cnt = countNotepadsInGroup($subId);`
+    <h2>Delete group "{{{$g['name']}}}"?</h2>
+    <p>Notepads in group: {{$cnt}}<br>
+    {if $cnt > 0}These notepads will become ungrouped, not deleted.<br>{end}
+    <strong>The group itself cannot be recovered.</strong></p>
+    <form method="POST" class="inline">
+        <input type="hidden" name="ngid" value="{{$subId}}">
+        <button class="btn bg-danger" name="confirmed_del_notepadgroup" value="1">Delete group</button>
+    </form>
+    <a href="?notepads&action=groups" class="btn bg-muted">Back</a>
+{end}
+
+{if $action === 'confirm_delete_np'}
+    `$np = getNotepad($subId);`
+    `$written = countWrittenPages($subId);`
+    <h2>Delete notebook "{{{$np['name']}}}"?</h2>
+    <p>Group: {{{$np['groupname'] ?? 'none'}}}<br>
+    Pages: {{$np['pages']}} ({{$written}} written)<br>
+    <strong>This cannot be undone.</strong></p>
+    <form method="POST" class="inline">
+        <input type="hidden" name="npid" value="{{$subId}}">
+        <button class="btn bg-danger" name="confirmed_del_np" value="1">Delete notebook</button>
+    </form>
+    <a href="?notepads&action=view_notepad&id={{$subId}}" class="btn bg-muted">Back</a>
+{end}
+
+{if $action === ''}
+    `$ungrouped = getNotepadsByGroup(null);`
+    {each $groups as $g}
+        <h2 class="group-name">{{{$g['name']}}}</h2>
+        `$gPads = getNotepadsByGroup((int)$g['id']);`
+        {if empty($gPads)}
+            <p class="empty-note mb2">No notepads in this group yet.</p>
+        {else}
+            <ul class="item-list">
+            {each $gPads as $np}
+                `$written = countWrittenPages((int)$np['id']);`
+                <li class="bg-muted">
+                    <a href="?notepads&action=view_notepad&id={{$np['id']}}">{{{$np['name']}}}</a>
+                    <span class="meta">`echo fmtDate($np['date']);` - {{$np['pages']}} pages, {{$written}} written</span>
+                </li>
+            {end}
+            </ul>
+        {end}
+        <form method="POST" class="mb4">
+            <input type="hidden" name="groupid" value="{{$g['id']}}">
+            <button class="btn bg-primary" name="add_notepad" value="1">New notepad in {{{$g['name']}}}</button>
+        </form>
+    {end}
+
+    {if !empty($ungrouped)}
+        <h2 class="group-name">Ungrouped Notebooks</h2>
+        <ul class="item-list">
+        {each $ungrouped as $np}
+            `$written = countWrittenPages((int)$np['id']);`
+            <li class="bg-muted">
+                <a href="?notepads&action=view_notepad&id={{$np['id']}}">{{{$np['name']}}}</a>
+                <span class="meta">`echo fmtDate($np['date']);` - {{$np['pages']}} pages, {{$written}} written</span>
+            </li>
+        {end}
+        </ul>
+    {end}
+
+    <div class="section-bottom">
+        <form method="POST" class="inline-block mr4">
+            <input type="hidden" name="groupid" value="">
+            <button class="btn bg-primary" name="add_notepad" value="1">Create Loose Notepad</button>
+        </form>
+        <a href="?notepads&action=groups" class="btn bg-muted mt1">Manage groups</a>
+    </div>
+{end}
