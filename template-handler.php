@@ -88,7 +88,8 @@ static function handle($template, $data) {
 * 
 * General PHP
 * 
-* - `#` => <?php # ?> : execute PHP code
+* - {php}#{/php} => <?php # ?> : execute PHP code
+* - {code #}     => <?php #; ?> : execute a single PHP statement
 * 
 * 
 * Base Template / Copy / Pastes
@@ -253,9 +254,11 @@ static function build($templatePath, $cachePath) {
 	$templateContent = preg_replace('/\{\s*breakblock\s*\}/s', '<?php do { ?>', $templateContent);
 	$templateContent = preg_replace('/\{\s*\/breakblock\s*\}/s', '<?php } while(false); ?>', $templateContent);
 	
-	// 17. Handle `#` syntax
-	$templateContent = preg_replace('/`\s*(.+?)\s*`/s', '<?php $1 ?>', $templateContent);
+	// 17. Handle {php} and {/php} syntax
+	$templateContent = preg_replace('/\{\s*php\s*\}(.*?)\{\s*\/php\s*\}/s', '<?php $1 ?>', $templateContent);
 	
+	// Handle {code #} syntax
+	$templateContent = preg_replace('/\{\s*code\s+(.+?)\s*\}/s', '<?php $1; ?>', $templateContent);
 	
 	// 18. Handle {debug} and {/debug} syntax
 	$templateContent = preg_replace('/\{\s*debug\s*\}/s', '<pre style="background:black; color:white; padding:4px 6px;">', $templateContent);
