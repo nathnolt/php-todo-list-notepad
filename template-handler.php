@@ -208,7 +208,13 @@ static function build($templatePath, $cachePath) {
 		//   3. Remove any non filled {paste} blocks
 		$templateContent = preg_replace(tagRegex('paste', '.+?'), '', $templateContent);
 	}
-	
+
+	// Handle {function name($args)} ... {/function} blocks
+	// This allows defining reusable snippets within the template itself.
+	$templateContent = preg_replace_callback('/' . tagPattern('function', '([a-zA-Z0-9_]+)\s*\((.*?)\)') . '(.*?)' . tagPattern('/function') . '/s', function($m) {
+		return '<?php function ' . $m[1] . '(' . $m[2] . ') { ?>' . $m[3] . '<?php }?>';
+	}, $templateContent);
+
 	// 5. Handle the {{{ $var }}} syntax
 	$templateContent = preg_replace('/\{\{\{\s*(.+?)\s*\}\}\}/s', '<?php echo htmlspecialchars($1); ?>', $templateContent);
 	

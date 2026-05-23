@@ -1,6 +1,18 @@
 {extend base}
 {cut title}Todo Lists{/cut}
 
+{function renderList($items)}
+    <ul class="item-list">
+    {each $items as $l}
+        {code $c = countItems((int)$l['id'])}
+        <li class="bg-muted">
+            <a href="?lists&action=view_list&id={{$l['id']}}">{{{$l['name']}}}</a>
+            <span class="meta">{{$c['done']}}/{{$c['total']}} {code echo fmtDate($l['date'])}</span>
+        </li>
+    {end}
+    </ul>
+{/function}
+
 {if $action === 'groups'}
     <h2 class="group-name">List groups</h2>
     {if empty($groups)}
@@ -62,15 +74,7 @@
         {if empty($gLists)}
             <p class="empty-note mb-1">No lists in this group yet.</p>
         {else}
-            <ul class="item-list">
-            {each $gLists as $l}
-                {code $c = countItems((int)$l['id'])}
-                <li class="bg-muted">
-                    <a href="?lists&action=view_list&id={{$l['id']}}">{{{$l['name']}}}</a>
-                    <span class="meta">{code echo fmtDate($l['date'])} - {{$c['total']}} item{{$c['total'] !== 1 ? 's' : ''}}</span>
-                </li>
-            {end}
-            </ul>
+            {code renderList($gLists)}
         {end}
         <form method="POST" class="mb-2">
             <input type="hidden" name="groupid" value="{{$g['id']}}">
@@ -80,15 +84,7 @@
 
     {if !empty($ungrouped)}
         <h2 class="group-name">Ungrouped Lists</h2>
-        <ul class="item-list">
-        {each $ungrouped as $l}
-            {code $c = countItems((int)$l['id'])}
-            <li class="bg-muted">
-                <a href="?lists&action=view_list&id={{$l['id']}}">{{{$l['name']}}}</a>
-                <span class="meta">{code echo fmtDate($l['date'])} - {{$c['total']}} item{{$c['total'] !== 1 ? 's' : ''}}</span>
-            </li>
-        {end}
-        </ul>
+        {code renderList($ungrouped)}
     {end}
 
     <div class="section-bottom">

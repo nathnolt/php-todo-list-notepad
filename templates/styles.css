@@ -125,8 +125,7 @@ ul.item-list li {
 }
 ul.item-list li a { font-weight: bold; }
 ul.item-list li .meta {
-	font-size: 13px;
-	margin-left: 8px;
+	margin-left: 4px;
 	color: #555;
 }
 .checklist {
