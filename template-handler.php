@@ -125,6 +125,17 @@ class Template {
 			$templateContent = str_replace('___TEMPLATE_MAIN_BODY_PLACEHOLDER___', trim($templateContent), $extendContent);
 		}
 
+		// Handle {include} blocks
+		// This allows pasting the content of another template file into the current one.
+		while (preg_match('/\{\s*include\s+(.+?)\s*\}/s', $templateContent, $matches)) {
+			$includePath = ROOT . '/templates/' . trim($matches[1]);
+			$includeContent = '';
+			if (file_exists($includePath)) {
+				$includeContent = file_get_contents($includePath);
+			}
+			$templateContent = str_replace($matches[0], $includeContent, $templateContent);
+		}
+
 		// 3. Handle {raw} blocks
 		//    We do this AFTER extension so we catch {raw} tags in the base template too.
 		$rawBuffers = [];
