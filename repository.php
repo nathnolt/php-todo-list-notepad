@@ -15,10 +15,10 @@ function getListgroup(int $id): ?array {
 
 function getListsByGroup(?int $gid): array {
     if ($gid === null) {
-        $st = db()->prepare('SELECT * FROM list WHERE userid=? AND groupid IS NULL ORDER BY ord,id');
+        $st = db()->prepare('SELECT * FROM list WHERE userid=? AND groupid IS NULL ORDER BY date DESC, id DESC');
         $st->execute([uid()]);
     } else {
-        $st = db()->prepare('SELECT * FROM list WHERE userid=? AND groupid=? ORDER BY ord,id');
+        $st = db()->prepare('SELECT * FROM list WHERE userid=? AND groupid=? ORDER BY date DESC, id DESC');
         $st->execute([uid(), $gid]);
     }
     return $st->fetchAll();
@@ -52,10 +52,10 @@ function getNotepadgroup(int $id): ?array {
 
 function getNotepadsByGroup(?int $gid): array {
     if ($gid === null) {
-        $st = db()->prepare('SELECT * FROM notepad WHERE userid=? AND groupid IS NULL ORDER BY ord,id');
+        $st = db()->prepare('SELECT * FROM notepad WHERE userid=? AND groupid IS NULL ORDER BY ord DESC, id DESC');
         $st->execute([uid()]);
     } else {
-        $st = db()->prepare('SELECT * FROM notepad WHERE userid=? AND groupid=? ORDER BY ord,id');
+        $st = db()->prepare('SELECT * FROM notepad WHERE userid=? AND groupid=? ORDER BY ord DESC, id DESC');
         $st->execute([uid(), $gid]);
     }
     return $st->fetchAll();
