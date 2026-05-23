@@ -5,7 +5,8 @@
     <ul class="item-list">
     {each $items as $np}
         {code $written = countWrittenPages((int)$np['id'])}
-        <li class="bg-muted">
+        {code $isFilled = ($written > 0 && $written == (int)$np['pages'])}
+        <li class="{{$isFilled ? 'bg-success' : 'bg-muted'}}">
             <a href="?notepads&action=view_notepad&id={{$np['id']}}">{{{$np['name']}}}</a>
             <span class="meta">{{$written}}/{{$np['pages']}} {code echo fmtDate($np['date'])}</span>
         </li>

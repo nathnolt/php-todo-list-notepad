@@ -5,7 +5,8 @@
     <ul class="item-list">
     {each $items as $l}
         {code $c = countItems((int)$l['id'])}
-        <li class="bg-muted">
+        {code $isDone = ($c['total'] > 0 && $c['total'] == $c['done'])}
+        <li class="{{$isDone ? 'bg-success' : 'bg-muted'}}">
             <a href="?lists&action=view_list&id={{$l['id']}}">{{{$l['name']}}}</a>
             <span class="meta">{{$c['done']}}/{{$c['total']}} {code echo fmtDate($l['date'])}</span>
         </li>

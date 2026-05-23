@@ -16,13 +16,13 @@ p {margin: 4px 0;}
 
 /* background fills */
 textarea,
-ul.item-list li,
 .bg-muted {
 	background-color: #e6e6e6;
 }
 .bg-primary { background-color: #b3d1ff; } 
 .bg-danger  { background-color: #ffb3b3; } 
 .bg-muted   { background-color: #e6e6e6; }
+.bg-success { background-color: #b3ffb3; }
 
 /* Shaping & Sizing */
 .btn,
@@ -87,11 +87,12 @@ a {
 /* --- Components & Forms --- */
 .btn {
 	display: inline-block;
-	padding: 4px 8px;
+	padding: 2px 6px;
 	border: none;
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
+	border: 2px solid rgba(0, 0, 0, 0.2);
 }
 
 input, select { padding: 4px 8px; }
