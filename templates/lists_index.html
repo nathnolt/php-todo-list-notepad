@@ -7,7 +7,7 @@
         <p class="empty-note">No groups yet.</p>
     {else}
         {each $groups as $g}
-            `$cnt = countListsInGroup((int)$g['id']);`
+            {code $cnt = countListsInGroup((int)$g['id'])}
             <div class="empty-note mt3 mb2">{{$cnt}} list{{$cnt !== 1 ? 's' : ''}}</div>
             <form method="POST" class="inline">
                 <input type="hidden" name="gid" value="{{$g['id']}}">
@@ -27,8 +27,8 @@
 {end}
 
 {if $action === 'confirm_delete_listgroup'}
-    `$g = getListgroup($subId);`
-    `$cnt = countListsInGroup($subId);`
+    {code $g = getListgroup($subId)}
+    {code $cnt = countListsInGroup($subId)}
     <h2>Delete group "{{{$g['name']}}}"?</h2>
     <p>Lists in group: {{$cnt}}<br>
     {if $cnt > 0}These lists will become ungrouped, not deleted.<br>{end}
@@ -41,8 +41,8 @@
 {end}
 
 {if $action === 'confirm_delete_list'}
-    `$list = getList($subId);`
-    `$c = countItems($subId);`
+    {code $list = getList($subId)}
+    {code $c = countItems($subId)}
     <h2>Delete list "{{{$list['name']}}}"?</h2>
     <p>Group: {{{$list['groupname'] ?? 'none'}}}<br>
     Items: {{$c['total']}} ({{$c['done']}} done)<br>
@@ -55,19 +55,19 @@
 {end}
 
 {if $action === ''}
-    `$ungrouped = getListsByGroup(null);`
+    {code $ungrouped = getListsByGroup(null)}
     {each $groups as $g}
         <h2 class="group-name">{{{$g['name']}}}</h2>
-        `$gLists = getListsByGroup((int)$g['id']);`
+        {code $gLists = getListsByGroup((int)$g['id'])}
         {if empty($gLists)}
             <p class="empty-note mb2">No lists in this group yet.</p>
         {else}
             <ul class="item-list">
             {each $gLists as $l}
-                `$c = countItems((int)$l['id']);`
+                {code $c = countItems((int)$l['id'])}
                 <li class="bg-muted">
                     <a href="?lists&action=view_list&id={{$l['id']}}">{{{$l['name']}}}</a>
-                    <span class="meta">`echo fmtDate($l['date']);` - {{$c['total']}} item{{$c['total'] !== 1 ? 's' : ''}}</span>
+                    <span class="meta">{code echo fmtDate($l['date'])} - {{$c['total']}} item{{$c['total'] !== 1 ? 's' : ''}}</span>
                 </li>
             {end}
             </ul>
@@ -82,10 +82,10 @@
         <h2 class="group-name">Ungrouped Lists</h2>
         <ul class="item-list">
         {each $ungrouped as $l}
-            `$c = countItems((int)$l['id']);`
+            {code $c = countItems((int)$l['id'])}
             <li class="bg-muted">
                 <a href="?lists&action=view_list&id={{$l['id']}}">{{{$l['name']}}}</a>
-                <span class="meta">`echo fmtDate($l['date']);` - {{$c['total']}} item{{$c['total'] !== 1 ? 's' : ''}}</span>
+                <span class="meta">{code echo fmtDate($l['date'])} - {{$c['total']}} item{{$c['total'] !== 1 ? 's' : ''}}</span>
             </li>
         {end}
         </ul>
