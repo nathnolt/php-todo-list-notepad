@@ -1,6 +1,18 @@
 {extend base}
 {cut title}Notebooks{/cut}
 
+{function renderNotepadList($items)}
+    <ul class="item-list">
+    {each $items as $np}
+        {code $written = countWrittenPages((int)$np['id'])}
+        <li class="bg-muted">
+            <a href="?notepads&action=view_notepad&id={{$np['id']}}">{{{$np['name']}}}</a>
+            <span class="meta">{{$written}}/{{$np['pages']}} {code echo fmtDate($np['date'])}</span>
+        </li>
+    {end}
+    </ul>
+{/function}
+
 {if $action === 'groups'}
     <h2 class="group-name">Notepad groups</h2>
     {if empty($groups)}
@@ -62,15 +74,7 @@
         {if empty($gPads)}
             <p class="empty-note mb-1">No notepads in this group yet.</p>
         {else}
-            <ul class="item-list">
-            {each $gPads as $np}
-                {code $written = countWrittenPages((int)$np['id'])}
-                <li class="bg-muted">
-                    <a href="?notepads&action=view_notepad&id={{$np['id']}}">{{{$np['name']}}}</a>
-                    <span class="meta">{code echo fmtDate($np['date'])} - {{$np['pages']}} pages, {{$written}} written</span>
-                </li>
-            {end}
-            </ul>
+            {code renderNotepadList($gPads)}
         {end}
         <form method="POST" class="mb-2">
             <input type="hidden" name="groupid" value="{{$g['id']}}">
@@ -80,15 +84,7 @@
 
     {if !empty($ungrouped)}
         <h2 class="group-name">Ungrouped Notebooks</h2>
-        <ul class="item-list">
-        {each $ungrouped as $np}
-            {code $written = countWrittenPages((int)$np['id'])}
-            <li class="bg-muted">
-                <a href="?notepads&action=view_notepad&id={{$np['id']}}">{{{$np['name']}}}</a>
-                <span class="meta">{code echo fmtDate($np['date'])} - {{$np['pages']}} pages, {{$written}} written</span>
-            </li>
-        {end}
-        </ul>
+        {code renderNotepadList($ungrouped)}
     {end}
 
     <div class="section-bottom">
