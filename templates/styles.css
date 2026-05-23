@@ -154,7 +154,7 @@ ul.item-list li .meta {
 .auth-box {
 	max-width: 400px;
 	margin: 16px auto;
-	padding: 16px;
+	padding: 8px;
 }
 .page-label {
 	font-weight: bold;
@@ -199,6 +199,7 @@ ul.item-list li .meta {
 .text-sm { font-size: 12px; }
 .text-lg { font-size: 16px; }
 .text-xl { font-size: 18px; }
+.inline-center { text-align:center; }
 
 /* --- Utility: Lists --- */
 .list-none {

@@ -21,10 +21,10 @@
     {else}
         {each $groups as $g}
             {code $cnt = countNotepadsInGroup((int)$g['id'])}
-            <div class="empty-note mt-2 mb-1">{{$cnt}} notepad{{$cnt !== 1 ? 's' : ''}}</div>
             <form method="POST" class="inline">
                 <input type="hidden" name="ngid" value="{{$g['id']}}">
                 <input type="text" name="name" value="{{{$g['name']}}}" required>
+                ({{$cnt}} notepad{{$cnt !== 1 ? 's' : ''}})
                 <button class="btn bg-muted" name="rename_notepadgroup" value="1">Rename</button>
             </form>
             <a href="?notepads&action=confirm_delete_notepadgroup&id={{$g['id']}}" class="btn bg-danger">Delete group</a>

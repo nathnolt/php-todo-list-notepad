@@ -21,10 +21,10 @@
     {else}
         {each $groups as $g}
             {code $cnt = countListsInGroup((int)$g['id'])}
-            <div class="empty-note mt-2 mb-1">{{$cnt}} list{{$cnt !== 1 ? 's' : ''}}</div>
             <form method="POST" class="inline">
                 <input type="hidden" name="gid" value="{{$g['id']}}">
                 <input type="text" name="name" value="{{{$g['name']}}}" required>
+                ({{$cnt}} list{{$cnt !== 1 ? 's' : ''}})
                 <button class="btn bg-muted" name="rename_listgroup" value="1">Rename</button>
             </form>
             <a href="?lists&action=confirm_delete_listgroup&id={{$g['id']}}" class="btn bg-danger">Delete group</a>
