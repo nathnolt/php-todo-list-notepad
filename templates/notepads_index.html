@@ -1,5 +1,5 @@
 {extend base}
-{cut title}Notebooks{/cut}
+{cut title}Notepads{/cut}
 
 {function renderNotepadList($items)}
     <ul class="item-list">
@@ -56,13 +56,13 @@
 {if $action === 'confirm_delete_np'}
     {code $np = getNotepad($subId)}
     {code $written = countWrittenPages($subId)}
-    <h2>Delete notebook "{{{$np['name']}}}"?</h2>
+    <h2>Delete notepad "{{{$np['name']}}}"?</h2>
     <p>Group: {{{$np['groupname'] ?? 'none'}}}<br>
     Pages: {{$np['pages']}} ({{$written}} written)<br>
     <strong>This cannot be undone.</strong></p>
     <form method="POST" class="inline">
         <input type="hidden" name="npid" value="{{$subId}}">
-        <button class="btn bg-danger" name="confirmed_del_np" value="1">Delete notebook</button>
+        <button class="btn bg-danger" name="confirmed_del_np" value="1">Delete notepad</button>
     </form>
     <a href="?notepads&action=view_notepad&id={{$subId}}" class="btn bg-muted">Back</a>
 {end}
@@ -84,7 +84,7 @@
     {end}
 
     {if !empty($ungrouped)}
-        <h2 class="group-name">Ungrouped Notebooks</h2>
+        <h2 class="group-name">Ungrouped Notepads</h2>
         {code renderNotepadList($ungrouped)}
     {end}
 
