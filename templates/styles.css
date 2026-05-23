@@ -7,7 +7,6 @@ input[type=number],
 select, 
 textarea, 
 .topbar, 
-h2.group-name, 
 .section-bottom, 
 .page-divider, 
 .auth-box {
@@ -39,14 +38,13 @@ ul.item-list li,
 }
 
 .topbar, 
-h2.group-name, 
 .section-bottom, 
 .page-divider, 
 .auth-box { 
 	border-style: dashed;
 }
 
-.topbar, h2.group-name {
+.topbar {
 	border-width: 0 0 2px 0;
 }
 .section-bottom, .page-divider {
@@ -81,7 +79,7 @@ a {
 	padding-bottom: 4px;
 }
 .section-bottom {
-	margin-top: 16px;
+	margin-top: 8px;
 	padding-top: 4px;
 }
 
@@ -119,6 +117,7 @@ ul.item-list {
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	margin-left: 4px;
 }
 ul.item-list li {
 	padding: 4px 8px;
@@ -146,9 +145,10 @@ ul.item-list li .meta {
 	border: none;
 	margin: 16px 0;
 }
-h2.group-name {
+.group-name {
 	font-size: 18px;
 	margin: 0;
+	margin-bottom: 2px;
 }
 .auth-box {
 	max-width: 400px;
