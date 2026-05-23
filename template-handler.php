@@ -114,7 +114,7 @@ static function build($templatePath, $cachePath) {
 	
 	// 2. Check for {extend} block, if it exists. Load it,
 	//    put the contents of the extended template in a variable
-	if(preg_match('/\{\s*extend\s+(.+?)\s*\}/s', $templateContent, $matches)) {
+	if(preg_match(tagRegex('extend', '(.+?)'), $templateContent, $matches)) {
 		$extendPath = ROOT . '/templates/' . $matches[1] . '.html';
 		$extendContent = file_get_contents($extendPath);
 		
@@ -129,7 +129,7 @@ static function build($templatePath, $cachePath) {
 
 	// Handle {include} blocks
 	// This allows pasting the content of another template file into the current one.
-	while (preg_match('/\{\s*include\s+(.+?)\s*\}/s', $templateContent, $matches)) {
+	while (preg_match(tagRegex('include', '(.+?)'), $templateContent, $matches)) {
 		$includePath = ROOT . '/templates/' . trim($matches[1]);
 		$includeContent = '';
 		if (file_exists($includePath)) {
@@ -141,7 +141,7 @@ static function build($templatePath, $cachePath) {
 	// Handle {use} and {usedef} blocks
 	// This tracks which components are required and strips unused definitions.
 	$usedNames = [];
-	if (preg_match_all('/\{\s*use\s+(.+?)\s*\}/s', $templateContent, $useMatches)) {
+	if (preg_match_all(tagRegex('use', '(.+?)'), $templateContent, $useMatches)) {
 		foreach ($useMatches[1] as $match) {
 			$names = explode(',', $match);
 			foreach ($names as $name) {
@@ -174,7 +174,7 @@ static function build($templatePath, $cachePath) {
 	{
 		// Look through the template for cut blocks
 		$cutBlocks = [];
-		preg_match_all('/\{\s*cut\s+(.+?)\s*\}(.+?)\{\s*\/cut\s*\}/s', $templateContent, $cutBlocks, PREG_SET_ORDER);
+		preg_match_all('/' . tagPattern('cut', '(.+?)') . '(.+?)' . tagPattern('/cut') . '/s', $templateContent, $cutBlocks, PREG_SET_ORDER);
 		
 		// Now we have an array of cut blocks, where each sub array contains 3 elements:
 		//   - the entire block
@@ -191,7 +191,7 @@ static function build($templatePath, $cachePath) {
 			$blockContent = $cutBlock[2];
 			
 			// look through the template for a paste block with the same name
-			$regex = '/\{\s*paste\s+' . $blockName . '\s*\}/s';
+			$regex = tagRegex('paste', $blockName);
 			$match = null;
 			preg_match($regex, $templateContent, $match);
 			
@@ -204,9 +204,9 @@ static function build($templatePath, $cachePath) {
 		// After we've put all of the cut content within paste, 
 		//   1. we have to remove all cut blocks from the template.
 		//   2. also remove any trailing enter characters after cut blocks
-		$templateContent = preg_replace('/\{\s*cut\s+.+?\s*\}.+?\{\s*\/cut\s*\}(\r|\n)*/s', '', $templateContent);
+		$templateContent = preg_replace('/' . tagPattern('cut', '.+?') . '.+?' . tagPattern('/cut') . '(\r|\n)*/s', '', $templateContent);
 		//   3. Remove any non filled {paste} blocks
-		$templateContent = preg_replace('/\{\s*paste\s+.+?\s*\}/s', '', $templateContent);
+		$templateContent = preg_replace(tagRegex('paste', '.+?'), '', $templateContent);
 	}
 	
 	// 5. Handle the {{{ $var }}} syntax
@@ -218,51 +218,51 @@ static function build($templatePath, $cachePath) {
 	
 	
 	// 7. Handle the {dump #} syntax
-	$templateContent = preg_replace('/\{\s*dump\s+(.+?)\s*\}/s', '<?php var_dump($1); ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('dump', '(.+?)'), '<?php var_dump($1); ?>', $templateContent);
 	
 	
 	// 8. Handle the {export #} syntax
-	$templateContent = preg_replace('/\{\s*export\s+(.+?)\s*\}/s', '<?php var_export($1); ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('export', '(.+?)'), '<?php var_export($1); ?>', $templateContent);
 	
 	
 	// 9. Handle the {if #} syntax
-	$templateContent = preg_replace('/\{\s*if\s+(.+?)\s*\}/s', '<?php if($1) { ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('if', '(.+?)'), '<?php if($1) { ?>', $templateContent);
 	
 	
 	// 10. Handle the {else} syntax
-	$templateContent = preg_replace('/\{\s*else\s*\}/s', '<?php } else { ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('else'), '<?php } else { ?>', $templateContent);
 	
 	
 	// 11. Handle the {each #} syntax
-	$templateContent = preg_replace('/\{\s*each\s+(.+?)\s*\}/s', '<?php foreach($1) { ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('each', '(.+?)'), '<?php foreach($1) { ?>', $templateContent);
 	
 	
 	// 12. Handle the {start} syntax
-	$templateContent = preg_replace('/\{\s*start\s*\}/s', '<?php { ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('start'), '<?php { ?>', $templateContent);
 	
 	
 	// 13. Handle the {end} syntax
-	$templateContent = preg_replace('/\{\s*end\s*\}/s', '<?php } ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('end'), '<?php } ?>', $templateContent);
 	
 	// 14. Handle {stop} syntax
-	$templateContent = preg_replace('/\{\s*stop\s*\}/s', '<?php return; ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('stop'), '<?php return; ?>', $templateContent);
 	
 	// 15. Handle {break} syntax
-	$templateContent = preg_replace('/\{\s*break\s*\}/s', '<?php break; ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('break'), '<?php break; ?>', $templateContent);
 	
 	// 16. Handle {breakblock} and {/breakblock} syntax
-	$templateContent = preg_replace('/\{\s*breakblock\s*\}/s', '<?php do { ?>', $templateContent);
-	$templateContent = preg_replace('/\{\s*\/breakblock\s*\}/s', '<?php } while(false); ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('breakblock'), '<?php do { ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('/breakblock'), '<?php } while(false); ?>', $templateContent);
 	
 	// 17. Handle {php} and {/php} syntax
-	$templateContent = preg_replace('/\{\s*php\s*\}(.*?)\{\s*\/php\s*\}/s', '<?php $1 ?>', $templateContent);
+	$templateContent = preg_replace('/' . tagPattern('php') . '(.*?)' . tagPattern('/php') . '/s', '<?php $1 ?>', $templateContent);
 	
 	// Handle {code #} syntax
-	$templateContent = preg_replace('/\{\s*code\s+(.+?)\s*\}/s', '<?php $1; ?>', $templateContent);
+	$templateContent = preg_replace(tagRegex('code', '(.+?)'), '<?php $1; ?>', $templateContent);
 	
 	// 18. Handle {debug} and {/debug} syntax
-	$templateContent = preg_replace('/\{\s*debug\s*\}/s', '<pre style="background:black; color:white; padding:4px 6px;">', $templateContent);
-	$templateContent = preg_replace('/\{\s*\/debug\s*\}/s', '</pre>', $templateContent);
+	$templateContent = preg_replace(tagRegex('debug'), '<pre style="background:black; color:white; padding:4px 6px;">', $templateContent);
+	$templateContent = preg_replace(tagRegex('/debug'), '</pre>', $templateContent);
 	
 	// 19. Handle the /* # */ syntax
 	$templateContent = preg_replace('/\/\*.+?\*\//s', '', $templateContent);
@@ -285,4 +285,18 @@ static function build($templatePath, $cachePath) {
 	file_put_contents($cachePath, $templateContent);
 }
 
+}
+
+/**
+ * Returns the regex pattern for a specific template tag.
+ */
+function tagPattern($name, $args = '') {
+	return '\{\s*' . preg_quote($name, '/') . ($args ? '\s+' . $args : '') . '\s*\}';
+}
+
+/**
+ * Returns the full regex (with delimiters and /s modifier) for a specific template tag.
+ */
+function tagRegex($name, $args = '') {
+	return '/' . tagPattern($name, $args) . '/s';
 }
