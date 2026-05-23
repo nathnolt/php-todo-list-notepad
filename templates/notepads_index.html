@@ -8,7 +8,7 @@
     {else}
         {each $groups as $g}
             {code $cnt = countNotepadsInGroup((int)$g['id'])}
-            <div class="empty-note mt3 mb2">{{$cnt}} notepad{{$cnt !== 1 ? 's' : ''}}</div>
+            <div class="empty-note mt-2 mb-1">{{$cnt}} notepad{{$cnt !== 1 ? 's' : ''}}</div>
             <form method="POST" class="inline">
                 <input type="hidden" name="ngid" value="{{$g['id']}}">
                 <input type="text" name="name" value="{{{$g['name']}}}" required>
@@ -18,7 +18,7 @@
         {end}
     {end}
     <div class="section-bottom">
-        <p class="empty-note mb2">Add a new group:</p>
+        <p class="empty-note mb-1">Add a new group:</p>
         <form method="POST">
             <input type="text" name="name" placeholder="Group name" required>
             <button class="btn bg-primary" name="add_notepadgroup" value="1">Add group</button>
@@ -60,7 +60,7 @@
         <h2 class="group-name">{{{$g['name']}}}</h2>
         {code $gPads = getNotepadsByGroup((int)$g['id'])}
         {if empty($gPads)}
-            <p class="empty-note mb2">No notepads in this group yet.</p>
+            <p class="empty-note mb-1">No notepads in this group yet.</p>
         {else}
             <ul class="item-list">
             {each $gPads as $np}
@@ -72,7 +72,7 @@
             {end}
             </ul>
         {end}
-        <form method="POST" class="mb4">
+        <form method="POST" class="mb-2">
             <input type="hidden" name="groupid" value="{{$g['id']}}">
             <button class="btn bg-primary" name="add_notepad" value="1">New notepad in {{{$g['name']}}}</button>
         </form>
@@ -92,10 +92,10 @@
     {end}
 
     <div class="section-bottom">
-        <form method="POST" class="inline-block mr4">
+        <form method="POST" class="inline-block mr-2">
             <input type="hidden" name="groupid" value="">
             <button class="btn bg-primary" name="add_notepad" value="1">Create Loose Notepad</button>
         </form>
-        <a href="?notepads&action=groups" class="btn bg-muted mt1">Manage groups</a>
+        <a href="?notepads&action=groups" class="btn bg-muted mt-1">Manage groups</a>
     </div>
 {end}

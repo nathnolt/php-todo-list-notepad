@@ -1,3 +1,58 @@
+/* --- Shared Feature Groups --- */
+
+/* border property order: top right bottom left */
+input[type=text], 
+input[type=password], 
+input[type=number], 
+select, 
+textarea, 
+.topbar, 
+h2.group-name, 
+.section-bottom, 
+.page-divider, 
+.auth-box {
+	border: 2px solid #e6e6e6;
+}
+
+/* background fills */
+textarea,
+ul.item-list li,
+.bg-muted {
+	background-color: #e6e6e6;
+}
+.bg-primary { background-color: #b3d1ff; } 
+.bg-danger  { background-color: #ffb3b3; } 
+.bg-muted   { background-color: #e6e6e6; }
+
+/* Shaping & Sizing */
+.btn,
+input,
+select,
+textarea,
+.flash,
+ul.item-list li,
+.auth-box {
+	border-radius: 4px;
+}
+.wrap, .btn, input, select, textarea, .box-border {
+	box-sizing: border-box;
+}
+
+.topbar, 
+h2.group-name, 
+.section-bottom, 
+.page-divider, 
+.auth-box { 
+	border-style: dashed;
+}
+
+.topbar, h2.group-name {
+	border-width: 0 0 2px 0;
+}
+.section-bottom, .page-divider {
+	border-width: 2px 0 0 0;
+}
+
 /* --- Base Styles --- */
 body, button, input, textarea, select {
 	font-family: Georgia, serif;
@@ -8,7 +63,7 @@ body, button, input, textarea, select {
 body {
 	background: #fff;
 	margin: 0;
-	padding: 0 0 40px 0;
+	padding: 0 0 16px 0;
 }
 a {
 	color: #000;
@@ -21,55 +76,38 @@ a {
 	max-width: 100%;
 	margin: 0 auto;
 	padding: 8px 4px;
-	box-sizing: border-box;
 }
 .topbar {
 	padding-bottom: 4px;
-	border-bottom: 2px dashed #e6e6e6;
 }
 .section-bottom {
-	margin-top: 10px;
-	border-top: 2px dashed #e6e6e6;
+	margin-top: 16px;
 	padding-top: 4px;
 }
 
 /* --- Components & Forms --- */
 .btn {
 	display: inline-block;
-	padding: 2px 8px;
+	padding: 4px 8px;
 	border: none;
-	border-radius: 4px;
 	color: #000;
 	text-decoration: none;
 	cursor: pointer;
 }
 
-input[type=text],
-input[type=password],
-input[type=number],
-select {
-	box-sizing: border-box;
-	border: 2px solid #e6e6e6;
-	padding: 2px 4px;
-	border-radius: 4px;
-}
+input, select { padding: 4px 8px; }
 textarea {
 	width: 100%;
-	background-color: #e6e6e6;
-	border: 2px solid #e6e6e6;
 	padding: 4px;
-	border-radius: 4px;
 	font-family: monospace;
-	box-sizing: border-box;
 }
 .app-title {
 	font-size: 18px;
 	font-weight: bold;
 }
 .flash {
-	padding: 6px 10px;
+	padding: 8px 16px;
 	margin-bottom: 8px;
-	border-radius: 4px;
 }
 .empty-note {
 	font-style: italic;
@@ -85,8 +123,6 @@ ul.item-list {
 ul.item-list li {
 	padding: 4px 8px;
 	margin-bottom: 4px;
-	border-radius: 4px;
-	background: #e6e6e6;
 }
 ul.item-list li a { font-weight: bold; }
 ul.item-list li .meta {
@@ -97,8 +133,9 @@ ul.item-list li .meta {
 .checklist {
 	list-style: none;
 	padding: 0;
+	margin: 0;
 }
-.checklist li { padding: 2px 0; }
+.checklist li { padding: 4px 0; }
 .checklist input[type=text].done {
 	text-decoration: line-through;
 	opacity: 0.5;
@@ -107,8 +144,7 @@ ul.item-list li .meta {
 /* --- Specific Page Elements --- */
 .page-divider {
 	border: none;
-	border-top: 2px dashed #e6e6e6;
-	margin: 24px 0;
+	margin: 16px 0;
 }
 h2.group-name {
 	font-size: 18px;
@@ -116,21 +152,15 @@ h2.group-name {
 }
 .auth-box {
 	max-width: 400px;
-	margin: 15px auto;
-	padding: 10px;
-	border: 2px dashed #e6e6e6;
-	border-radius: 8px;
+	margin: 16px auto;
+	padding: 16px;
 }
 .page-label {
 	font-weight: bold;
 	display: inline-block;
-	margin-top: 6px;
+	margin-top: 8px;
 }
 
-/* fills */
-.bg-primary { background-color: #b3d1ff; } 
-.bg-danger  { background-color: #ffb3b3; } 
-.bg-muted   { background-color: #e6e6e6; }
 
 /* box sizing */
 .box-border { box-sizing: border-box; }
@@ -149,25 +179,17 @@ h2.group-name {
 .cl-both { clear: both; }
 
 /* --- Utility: Margins --- */
-.m0 { margin: 0; }
-.mt0 { margin-top: 0; } 
-.mt1 { margin-top: 4px; }
-.mt3 { margin-top: 6px; }
-.mt5 { margin-top: 12px; }
-.mb1 { margin-bottom: 2px; }
-.mb2 { margin-bottom: 4px; } 
-.mb3 { margin-bottom: 6px; } 
-.mb4 { margin-bottom: 8px; }
-.mb5 { margin-bottom: 10px; } 
-.mb6 { margin-bottom: 12px; }
-.mr4 { margin-right: 8px; }
+.m-0 { margin: 0; }
+.mt-1 { margin-top: 4px; }
+.mt-2 { margin-top: 8px; }
+.mt-4 { margin-top: 16px; }
+.mb-1 { margin-bottom: 4px; }
+.mb-2 { margin-bottom: 8px; }
+.mr-2 { margin-right: 8px; }
 
 /* --- Utility: Paddings --- */
-.p0 { padding: 0; } 
-.py1 {
-	padding-top: 4px;
-	padding-bottom: 4px;
-}
+.p-0 { padding: 0; } 
+.py-1 { padding-top: 4px; padding-bottom: 4px; }
 
 /* --- Utility: Typography --- */
 .fs-base { font-size: 14px; }

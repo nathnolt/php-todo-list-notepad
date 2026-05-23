@@ -8,7 +8,7 @@
     {else}
         {each $groups as $g}
             {code $cnt = countListsInGroup((int)$g['id'])}
-            <div class="empty-note mt3 mb2">{{$cnt}} list{{$cnt !== 1 ? 's' : ''}}</div>
+            <div class="empty-note mt-2 mb-1">{{$cnt}} list{{$cnt !== 1 ? 's' : ''}}</div>
             <form method="POST" class="inline">
                 <input type="hidden" name="gid" value="{{$g['id']}}">
                 <input type="text" name="name" value="{{{$g['name']}}}" required>
@@ -18,7 +18,7 @@
         {end}
     {end}
     <div class="section-bottom">
-        <p class="empty-note mb2">Add a new group:</p>
+        <p class="empty-note mb-1">Add a new group:</p>
         <form method="POST">
             <input type="text" name="name" placeholder="Group name" required>
             <button class="btn bg-primary" name="add_listgroup" value="1">Add group</button>
@@ -60,7 +60,7 @@
         <h2 class="group-name">{{{$g['name']}}}</h2>
         {code $gLists = getListsByGroup((int)$g['id'])}
         {if empty($gLists)}
-            <p class="empty-note mb2">No lists in this group yet.</p>
+            <p class="empty-note mb-1">No lists in this group yet.</p>
         {else}
             <ul class="item-list">
             {each $gLists as $l}
@@ -72,7 +72,7 @@
             {end}
             </ul>
         {end}
-        <form method="POST" class="mb4">
+        <form method="POST" class="mb-2">
             <input type="hidden" name="groupid" value="{{$g['id']}}">
             <button class="btn bg-primary" name="add_list" value="1">New list in {{{$g['name']}}}</button>
         </form>
@@ -92,7 +92,7 @@
     {end}
 
     <div class="section-bottom">
-        <form method="POST" class="inline-block mr4">
+        <form method="POST" class="inline-block mr-2">
             <input type="hidden" name="groupid" value="">
             <button class="btn bg-primary" name="add_list" value="1">Create Loose List</button>
         </form>

@@ -4,12 +4,12 @@
 <form method="POST">
     <input type="hidden" name="lid" value="{{$subId}}">
     
-    <div class="mb5">
-        <div class="mb3">
+    <div>
+        <div class="mb-2">
             <label for="list_name" class="fw-bold">Name</label>
             <input type="text" id="list_name" name="list_name" value="{{{$list['name']}}}" required class="w-full text-lg">
         </div>
-        <div class="inline-block mr4">
+        <div class="inline-block mr-2">
             <label for="list_group" class="fw-bold">Group</label>
             <select id="list_group" name="groupid">
                 <option value="">(None)</option>
@@ -37,7 +37,7 @@
         <button type="submit" class="btn bg-primary">Add</button>
     </div>
 
-    <div class="mt5">
+    <div class="mt-4">
         <button type="submit" name="save_and_back_list" value="1" class="btn bg-muted">Save & Back</button>
         <a href="?lists&action=confirm_delete_list&id={{$subId}}" class="btn bg-danger float-right">Delete List</a>
     </div>
